@@ -1,0 +1,52 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #06323d;
+}
+
+.app {
+  text-align: center;
+  padding: 40px;
+}
+
+.search input {
+  padding: 10px;
+  font-size: 16px;
+  width: 200px;
+}
+
+.search button {
+  padding: 10px 15px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.weather {
+  margin-top: 20px;
+  background: rgb(92, 4, 4);
+  padding: 20px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.error {
+  color: red;
+}
+
+.map-container {
+  height: 300px;
+  margin-top: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+/* Responsive map */
+@media (max-width: 480px) {
+  .map-container {
+    height: 250px;
+  }
+}
