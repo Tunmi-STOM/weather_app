@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background: #06323d;
+  background: #7c0b0b;
 }
 
 .app {
@@ -22,7 +22,7 @@ body {
 
 .weather {
   margin-top: 20px;
-  background: rgb(92, 4, 4);
+  background: rgb(0, 255, 55);
   padding: 20px;
   border-radius: 8px;
   display: inline-block;

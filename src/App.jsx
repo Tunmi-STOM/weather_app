@@ -95,11 +95,11 @@ function App() {
 
       {weather && (
         <div className="weather">
-          <h2>{weather.name}</h2>
-          <p>🌡️ Temperature: {weather.main.temp}°C</p>
-          <p>☁️ Condition: {weather.weather[0].description}</p>
-          <p>💧 Humidity: {weather.main.humidity}%</p>
-          <p>🌬️ Wind: {weather.wind.speed} m/s</p>
+          <h2>Location: {weather.name}</h2>
+          <p>Temperature: {weather.main.temp}°C</p>
+          <p>Condition: {weather.weather[0].description}</p>
+          <p>Humidity: {weather.main.humidity}%</p>
+          <p>Wind: {weather.wind.speed} m/s</p>
         </div>
       )}
     </div>
