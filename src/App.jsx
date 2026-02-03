@@ -9,10 +9,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Fetch weather by city name
   const fetchWeatherByCity = async (cityName) => {
     if (!cityName) return;
-
     setLoading(true);
     setError("");
 
@@ -20,7 +18,6 @@ function App() {
       const res = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${API_KEY}`
       );
-
       if (!res.ok) throw new Error("City not found");
 
       const data = await res.json();
@@ -33,7 +30,6 @@ function App() {
     }
   };
 
-  // Fetch weather by coordinates
   const fetchWeatherByLocation = async (lat, lon) => {
     setLoading(true);
     setError("");
@@ -42,66 +38,74 @@ function App() {
       const res = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
       );
-
-      if (!res.ok) throw new Error("Unable to fetch location weather");
-
       const data = await res.json();
       setWeather(data);
-    } catch (err) {
-      setError("Location access denied or unavailable");
+    } catch {
+      setError("Location access denied. Search manually.");
     } finally {
       setLoading(false);
     }
   };
 
-  // Get user's location on first load
   useEffect(() => {
-    if (!navigator.geolocation) {
-      setError("Geolocation is not supported");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        fetchWeatherByLocation(latitude, longitude);
+    navigator.geolocation?.getCurrentPosition(
+      (pos) => {
+        fetchWeatherByLocation(
+          pos.coords.latitude,
+          pos.coords.longitude
+        );
       },
-      () => {
-        setError("Location permission denied. Search manually.");
-      }
+      () => setError("Enable location or search manually")
     );
   }, []);
 
-  const handleSearch = () => {
-    fetchWeatherByCity(city);
-  };
-
   return (
     <div className="app">
-      <h1>🌍 Weather App</h1>
+      <div className="card">
+        <header className="header">
+          <h1>Weather</h1>
+          <p>Real-time weather updates</p>
+        </header>
 
-      <div className="search">
-        <input
-          type="text"
-          placeholder="Enter city name"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-        />
-        <button onClick={handleSearch}>Search</button>
-      </div>
-
-      {loading && <p>Loading...</p>}
-      {error && <p className="error">{error}</p>}
-
-      {weather && (
-        <div className="weather">
-          <h2>Location: {weather.name}</h2>
-          <p>Temperature: {weather.main.temp}°C</p>
-          <p>Condition: {weather.weather[0].description}</p>
-          <p>Humidity: {weather.main.humidity}%</p>
-          <p>Wind: {weather.wind.speed} m/s</p>
+        <div className="search">
+          <input
+            type="text"
+            placeholder="Search city"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+          />
+          <button onClick={() => fetchWeatherByCity(city)}>
+            Search
+          </button>
         </div>
-      )}
+
+        {loading && <p className="status">Loading...</p>}
+        {error && <p className="error">{error}</p>}
+
+        {weather && (
+          <div className="weather">
+            <h2>{weather.name}</h2>
+            <div className="temp">
+              {Math.round(weather.main.temp)}°C
+            </div>
+
+            <div className="details">
+              <div>
+                <span>Condition</span>
+                <p>{weather.weather[0].description}</p>
+              </div>
+              <div>
+                <span>Humidity</span>
+                <p>{weather.main.humidity}%</p>
+              </div>
+              <div>
+                <span>Wind</span>
+                <p>{weather.wind.speed} m/s</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
